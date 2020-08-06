@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import Forms from "./../../common/forms";
+import Forms from "../../common/forms";
 import { login } from "../../services/authService";
-import { gotUserDetails } from "./loginSlice";
-import { getCurrentUser } from "./../../services/authService";
+import { getCurrentUser } from "../../services/authService";
 import { toast, ToastContainer } from "react-toastify";
+import { Redirect } from "react-router-dom";
 const Joi = require("@hapi/joi");
 
 class LoginForm extends Forms {
@@ -23,13 +23,9 @@ class LoginForm extends Forms {
     let { email, password } = this.state.data;
     try {
       await login(email, password);
-      // toast.info("You as successfully logged In");
+      toast.info("You as successfully logged In");
       // const { state } = this.props.location;
-      // window.location = state ? state.from.pathname : "/";
-
-      const user = getCurrentUser();
-      console.log(user);
-      this.props.gotUserDetails(user);
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
@@ -41,11 +37,11 @@ class LoginForm extends Forms {
   };
 
   render() {
+    if (getCurrentUser()) return <Redirect to={"/"} />;
     return (
       <div className="col-6 container">
-        {/* <ToastContainer /> */}
-
         <h1 className="bm">Login Page</h1>
+        <ToastContainer />
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("email", "Email")}
           {this.renderInput("password", "Password", "password")}
@@ -56,11 +52,4 @@ class LoginForm extends Forms {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.entities.login,
-});
-const mapDispatchToProps = (dispatch) => ({
-  gotUserdetails: (user) => dispatch(gotUserDetails(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default connect()(LoginForm);

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import loginReducer from "../../features/loginPage/loginSlice";
+import homeReducer from "../../features/homePage/homeSlice";
 
 export default combineReducers({
-  login: loginReducer,
+  home: homeReducer,
 });
