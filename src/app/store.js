@@ -1,8 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import reducer from "./combinedReducer";
+import api from "./../middleware/api";
 
 export default configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
+  reducer,
+  middleware: [...getDefaultMiddleware(), api],
 });
