@@ -2,11 +2,12 @@ import React, { Component } from "react";
 
 import Input from "./input";
 import Select from "./select";
+import "./Forms.css";
 
 class Forms extends Component {
   state = {
     data: {},
-    errors: {},
+    errors: {}
   };
 
   validate = () => {
@@ -20,7 +21,7 @@ class Forms extends Component {
 
   validateProperty = ({ name, value }) => {
     const { error } = this.schema.validate({
-      [name]: value,
+      [name]: value
     });
     for (let item of error.details) {
       if (item.path[0] === name) {
@@ -48,11 +49,7 @@ class Forms extends Component {
 
   renderButton = (label) => {
     return (
-      <button
-        disabled={this.validate()}
-        type="submit"
-        className="btn btn-primary"
-      >
+      <button disabled={this.validate()} type="submit" className="submit">
         {label}
       </button>
     );

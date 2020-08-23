@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 
 import { apiUrl } from "../config.json";
-import http from "./httpService";
+import { http } from "../middleware/api";
 
 function authUrl(id) {
   return `${apiUrl}/auth/${id}`;

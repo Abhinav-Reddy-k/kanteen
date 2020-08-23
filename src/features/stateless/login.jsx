@@ -6,17 +6,21 @@ import { login } from "../../services/authService";
 import { getCurrentUser } from "../../services/authService";
 import { toast, ToastContainer } from "react-toastify";
 import { Redirect } from "react-router-dom";
+import "./Login.css";
 const Joi = require("@hapi/joi");
 
 class LoginForm extends Forms {
   state = {
     data: { email: "", password: "" },
-    errors: {},
+    errors: {}
   };
 
   schema = Joi.object({
-    email: Joi.string().required().label("email"),
-    password: Joi.string().required().min(3).label("Password"),
+    email: Joi.string()
+      .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+      .required()
+      .label("email"),
+    password: Joi.string().required().min(3).label("Password")
   }).options({ abortEarly: false });
 
   doSubmit = async () => {
@@ -39,13 +43,13 @@ class LoginForm extends Forms {
   render() {
     if (getCurrentUser()) return <Redirect to={"/"} />;
     return (
-      <div className="col-6 container">
-        <h1 className="bm">Login Page</h1>
+      <div className="main">
+        <h1 className="sign m-4">Login</h1>
         <ToastContainer />
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("email", "Email")}
           {this.renderInput("password", "Password", "password")}
-          {this.renderButton("Login")}
+          {this.renderButton("Sign in.")}
         </form>
       </div>
     );

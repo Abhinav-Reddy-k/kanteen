@@ -3,17 +3,19 @@ import React from "react";
 import LoginForm from "./features/stateless/login";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Register from "./features/register";
-import Logout from "./features/logout";
-import PageNotFound from "./features/pageNotFound";
+import Register from "./features/stateless/register";
+import Logout from "./features/stateless/logout";
+import PageNotFound from "./features/stateless/pageNotFound";
 import HomePage from "./features/homePage/homePage";
+import NavBar from "./features/stateless/navbar";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <React.Fragment>
       <ToastContainer />
       {/* <NavBar /> */}
-      <main className="container-fluid">
+      <main>
         <Switch>
           <Route path="/register" component={Register} />
           <Route path="/login" component={LoginForm} />
