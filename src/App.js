@@ -9,12 +9,15 @@ import PageNotFound from "./features/stateless/pageNotFound";
 import HomePage from "./features/homePage/homePage";
 import NavBar from "./features/stateless/navbar";
 import "react-toastify/dist/ReactToastify.css";
+import { getCurrentUser } from "./services/authService";
 
 function App() {
+  let user = "";
+  user = getCurrentUser();
   return (
     <React.Fragment>
       <ToastContainer />
-      {/* <NavBar /> */}
+      {!user && <NavBar />}
       <main>
         <Switch>
           <Route path="/register" component={Register} />

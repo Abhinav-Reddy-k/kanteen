@@ -11,8 +11,10 @@
     "already-styled-components": "3.1.1",
     "axios": "^0.19.2",
     "bootstrap": "4.5.2",
+    "jquery": "3.5.1",
     "jwt-decode": "^2.2.0",
     "moment": "2.27.0",
+    "popper.js": "1.16.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
@@ -33,7 +35,11 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",

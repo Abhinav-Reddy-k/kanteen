@@ -1,0 +1,16 @@
+.features {
+  font-size: 15px;
+  min-height: 300px;
+  background-color: #f7feff;
+  padding: 20px 20px;
+  border-top: 1px solid rgb(223, 218, 218);
+  border-bottom: 1px solid rgb(223, 220, 220);
+}
+
+.features img {
+  flex-shrink: 0;
+  margin: 10px;
+  margin-right: 20px;
+  height: 30px;
+  width: 30px;
+}
