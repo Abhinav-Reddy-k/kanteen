@@ -1,13 +1,14 @@
 import React from "react";
 import { toast } from "react-toastify";
-import Forms from "./../common/forms";
-import { register } from "./../services/userService";
+import { register } from "../../services/userService";
+import Forms from "../../common/forms";
+import "./Login.css";
 const Joi = require("@hapi/joi");
 
 class Register extends Forms {
   state = {
     data: { username: "", password: "", email: "" },
-    errors: {},
+    errors: {}
   };
 
   schema = Joi.object({
@@ -16,7 +17,7 @@ class Register extends Forms {
     email: Joi.string()
       .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
       .required()
-      .label("Email"),
+      .label("Email")
   }).options({ abortEarly: false });
 
   doSubmit = async () => {
@@ -37,8 +38,8 @@ class Register extends Forms {
 
   render() {
     return (
-      <div className="col-6 container">
-        <h1 className="bm">Register</h1>
+      <div className="main">
+        <h1 className="bm sign m-4">Register</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("username", "Username")}
           {this.renderInput("email", "Email")}

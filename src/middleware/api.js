@@ -1,6 +1,20 @@
 import { apiCallBegan, apiCallFailed, apiCallSuccess } from "../features/api";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const http = require("../services/httpService");
+axios.defaults.headers.common["x-auth-token"] = localStorage.getItem("token");
+
+axios.interceptors.response.use(null, function (error) {
+  const expectedError =
+    error.response &&
+    error.response.status >= 400 &&
+    error.response.status < 500;
+  if (!expectedError) {
+    toast.error("An Unexpected Error Occured");
+  }
+
+  return Promise.reject(error);
+});
 
 const api = (store) => (next) => async (action) => {
   if (action.type !== apiCallBegan.type) return next(action);
@@ -8,11 +22,13 @@ const api = (store) => (next) => async (action) => {
   const { url, onSuccess, onError, method, data, onLoading } = action.payload;
 
   try {
-    const responce = await http.request({
-      baseURL: "http://localhost:9001/api",
+    const responce = await axios({
+      baseURL: "http://localhost:3000/api",
       url,
       method,
       data,
+      onSuccess,
+      onError
     });
 
     // specific
@@ -29,3 +45,4 @@ const api = (store) => (next) => async (action) => {
 };
 
 export default api;
+export const http = { get: axios.get, post: axios.post };

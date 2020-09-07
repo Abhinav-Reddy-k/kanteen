@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { toast } from "react-toastify";
-
-import { logout } from "../services/authService";
+import { logout } from "../../services/authService";
 
 class Logout extends Component {
   componentDidMount() {
