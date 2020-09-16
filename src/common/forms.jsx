@@ -55,19 +55,19 @@ class Forms extends Component {
     );
   };
 
-  renderSelect = (name, label, options) => {
+  renderSelect = (label, options) => {
     const { data, errors } = this.state;
     return (
       <Select
         options={options}
-        name={name}
-        value={data[name]}
+        value={data[label]}
         onChange={this.handleChange}
         label={label}
-        error={errors[name]}
+        error={errors[label]}
       />
     );
   };
+
 
   renderInput = (name, label, type = "text") => {
     const { data, errors } = this.state;

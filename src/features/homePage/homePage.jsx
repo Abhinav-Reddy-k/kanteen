@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadFood } from "./homeSlice";
 import Header from "../header/headerComp";
 import "./homePage.css";
-import Features from "../stateless/features";
+import Features from "./features";
+import Items from "./items";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,9 @@ const HomePage = () => {
     <Fragment>
       <Header />
       <Features />
+      <div className="card-group">
+        <Items foodItems={foodItems} />
+      </div>
       {foodItems.map((item) => (
         <h1>{item.name}</h1>
       ))}

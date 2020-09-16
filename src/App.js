@@ -8,6 +8,7 @@ import Logout from "./features/stateless/logout";
 import PageNotFound from "./features/stateless/pageNotFound";
 import HomePage from "./features/homePage/homePage";
 import NavBar from "./features/stateless/navbar";
+import ItemForm from "./features/admin/itemForm";
 import "react-toastify/dist/ReactToastify.css";
 import { getCurrentUser } from "./services/authService";
 
@@ -23,9 +24,10 @@ function App() {
           <Route path="/register" component={Register} />
           <Route path="/login" component={LoginForm} />
           <Route path="/logout" component={Logout} />
+          <Route path="/items/:id" component={ItemForm} />
           <Route path="/pageNotFound" component={PageNotFound} />
-          <Route path="/home" component={HomePage} />
-          <Redirect from="/" exact to="/home" />
+          <Route path="/" component={HomePage} />
+          {/* <Redirect from="/" exact to="/home" /> */}
           <Redirect to="/pageNotFound" />
         </Switch>
       </main>

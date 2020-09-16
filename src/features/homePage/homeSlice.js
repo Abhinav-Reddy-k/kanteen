@@ -9,14 +9,17 @@ const slice = createSlice({
     lastFetch: null
   },
   reducers: {
-    foodAdded: (home, action) => {
+    foodReceived: (home, action) => {
       home.food = action.payload;
       home.lastFetch = Date.now();
+    },
+    itemAdded: (home, action) => {
+      home.food.push(action.payload);
     }
   }
 });
 
-const { foodAdded } = slice.actions;
+const { foodReceived, itemAdded } = slice.actions;
 
 export default slice.reducer;
 
@@ -27,8 +30,24 @@ export const loadFood = () => (dispatch, getState) => {
   dispatch(
     apiCallBegan({
       url: "/foodItems",
-      onSuccess: foodAdded.type,
+      onSuccess: foodReceived.type,
       method: "get"
     })
   );
+};
+
+export const addItem = (item) => {
+  apiCallBegan({
+    url: "/foodItems",
+    method: "post",
+    data: item,
+    onSuccess: itemAdded.type
+  });
+};
+// Selectors
+export const getFoodItems = (store) => store.entities.home.food;
+
+export const getItem = (foodItems, itemId) => {
+  const item = foodItems.filter((item) => item.itemId === itemId);
+  return item;
 };
