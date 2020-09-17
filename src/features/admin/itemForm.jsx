@@ -1,7 +1,7 @@
 import React from "react";
 import Forms from "../../common/forms";
 import { connect } from "react-redux";
-import { getItem, addItem } from "../homePage/homeSlice";
+import { addItem, updateItem } from "../homePage/homeSlice";
 import { getCurrentUser } from "../../services/authService";
 import { toast } from "react-toastify";
 import "./../stateless/Login.css";
@@ -15,8 +15,6 @@ class ItemForm extends Forms {
       url: "",
       category: "",
       price: "",
-      availability: "",
-      __v: ""
     },
     categories: ["MilkShake", "Chinese", "Shakes", "Cold Drinks"],
     errors: {}
@@ -35,26 +33,37 @@ class ItemForm extends Forms {
     try {
       const itemId = this.props.match.params.id;
       if (itemId === "new") return;
-      const item = getItem(this.props.foodItems, itemId);
+      const item = this.props.foodItems.filter(item => item._id == itemId);
       console.log(item);
-      this.setState({ data: item });
+      console.log(itemId);
+      this.setState({ data:item[0] });
     } catch (error) {
       if (error.response && error.response.status === 404)
         return this.props.history.replace("/pageNotFound");
     }
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     this.populateItems();
   }
 
   doSubmit = () => {
     const user = getCurrentUser();
     if (user && user.isAdmin) {
-      this.props.addItem(this.state.data);
-      toast.success("Movie Saved Succesfully");
-    } else toast.error("You cannot save a movie");
-    this.props.history.push("/movies");
+      const item = this.state.data;
+      if (item._id !== "new") {
+        const id = item._id;
+        delete item._id;
+        delete item.__v;
+        this.props.updateItem(item,id)
+      }
+      else {
+        delete item._id;
+        this.props.addItem(item)
+      };
+      toast.success("Item Saved Succesfully");
+    } else toast.error("You cannot save or add new food item");
+    this.props.history.push("/");
   };
 
   render() {
@@ -77,10 +86,9 @@ const mapStateToProps = (state) => ({
   foodItems: state.entities.home.food
 });
 
-const mapDispatchToProps = (dispach) => {
-  return {
-    addItem: (item) => dispach(addItem(item))
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  addItem: (item) => dispatch(addItem(item)),
+  updateItem: (item,id) => dispatch(updateItem(item,id))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemForm);

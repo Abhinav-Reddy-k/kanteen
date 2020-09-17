@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function Card({ url, title }) {
+function Card({ url, title ,id}) {
   const cardStyle = {
     width: "18rem"
   };
@@ -16,6 +17,7 @@ function Card({ url, title }) {
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
         <button className="btn btn-primary">Add to cart</button>
+        <Link to={`home/items/${id}`} className="btn">Edit</Link>
       </div>
     </div>
   );

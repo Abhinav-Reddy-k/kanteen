@@ -20,7 +20,7 @@ class LoginForm extends Forms {
       .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
       .required()
       .label("email"),
-    password: Joi.string().required().min(3).label("Password")
+    password: Joi.string().required().min(5).label("Password")
   }).options({ abortEarly: false });
 
   doSubmit = async () => {

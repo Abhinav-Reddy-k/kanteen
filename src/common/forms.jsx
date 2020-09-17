@@ -74,10 +74,11 @@ class Forms extends Component {
     return (
       <Input
         type={type}
-        name={name}
+        id={name}
         value={data[name]}
+        name={name}
         onChange={this.handleChange}
-        label={label}
+        placeholder={label}
         error={errors[name]}
       />
     );

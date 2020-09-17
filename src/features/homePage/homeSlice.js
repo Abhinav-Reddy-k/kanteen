@@ -15,11 +15,15 @@ const slice = createSlice({
     },
     itemAdded: (home, action) => {
       home.food.push(action.payload);
+    },
+    itemUpdated: (home, action) => {
+      const ind = home.food.findIndex(item => item._id === action.payload._id);
+      home.food.splice(ind, 1, action.payload);
     }
   }
 });
 
-const { foodReceived, itemAdded } = slice.actions;
+const { foodReceived, itemAdded, itemUpdated } = slice.actions;
 
 export default slice.reducer;
 
@@ -36,18 +40,28 @@ export const loadFood = () => (dispatch, getState) => {
   );
 };
 
-export const addItem = (item) => {
-  apiCallBegan({
-    url: "/foodItems",
-    method: "post",
-    data: item,
-    onSuccess: itemAdded.type
-  });
+export const addItem = (item) => (dispatch) => {
+  dispatch(
+    apiCallBegan({
+      url: `/foodItems`,
+      method: "post",
+      data: item,
+      onSuccess: itemAdded.type
+    })
+  )
 };
+
+export const updateItem = (item, id) => dispatch => {
+  dispatch(
+    apiCallBegan({
+      url: `/foodItems/${id}`,
+      method: "put",
+      data: item,
+      onSuccess: itemUpdated.type
+    })
+  )
+}
 // Selectors
 export const getFoodItems = (store) => store.entities.home.food;
 
-export const getItem = (foodItems, itemId) => {
-  const item = foodItems.filter((item) => item.itemId === itemId);
-  return item;
-};
+

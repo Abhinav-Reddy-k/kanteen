@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from "react";
 import { getCurrentUser } from "./../../services/authService";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadFood } from "./homeSlice";
 import Header from "../header/headerComp";
@@ -27,6 +27,7 @@ const HomePage = () => {
       {foodItems.map((item) => (
         <h1>{item.name}</h1>
       ))}
+      <Link to="/home/items/new" className="btn btn-primary"> Add new item</Link>
     </Fragment>
   );
 };
