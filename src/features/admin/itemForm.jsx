@@ -14,9 +14,9 @@ class ItemForm extends Forms {
       name: "",
       url: "",
       category: "",
-      price: "",
+      price: ""
     },
-    categories: ["MilkShake", "Chinese", "Shakes", "Cold Drinks"],
+    categories: ["MilkShake", "Fried Rice", "Drinks"],
     errors: {}
   };
 
@@ -33,10 +33,10 @@ class ItemForm extends Forms {
     try {
       const itemId = this.props.match.params.id;
       if (itemId === "new") return;
-      const item = this.props.foodItems.filter(item => item._id == itemId);
-      console.log(item);
-      console.log(itemId);
-      this.setState({ data:item[0] });
+      const item = this.props.foodItems.filter((item) => item._id == itemId);
+      // console.log(item);
+      // console.log(itemId);
+      this.setState({ data: item[0] });
     } catch (error) {
       if (error.response && error.response.status === 404)
         return this.props.history.replace("/pageNotFound");
@@ -55,12 +55,11 @@ class ItemForm extends Forms {
         const id = item._id;
         delete item._id;
         delete item.__v;
-        this.props.updateItem(item,id)
-      }
-      else {
+        this.props.updateItem(item, id);
+      } else {
         delete item._id;
-        this.props.addItem(item)
-      };
+        this.props.addItem(item);
+      }
       toast.success("Item Saved Succesfully");
     } else toast.error("You cannot save or add new food item");
     this.props.history.push("/");
@@ -88,7 +87,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   addItem: (item) => dispatch(addItem(item)),
-  updateItem: (item,id) => dispatch(updateItem(item,id))
+  updateItem: (item, id) => dispatch(updateItem(item, id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemForm);

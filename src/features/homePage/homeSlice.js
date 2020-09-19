@@ -17,13 +17,21 @@ const slice = createSlice({
       home.food.push(action.payload);
     },
     itemUpdated: (home, action) => {
-      const ind = home.food.findIndex(item => item._id === action.payload._id);
+      const ind = home.food.findIndex(
+        (item) => item._id === action.payload._id
+      );
       home.food.splice(ind, 1, action.payload);
+    },
+    itemDeleted: (home, action) => {
+      const ind = home.food.findIndex(
+        (item) => item._id === action.payload._id
+      );
+      home.food.splice(ind, 1);
     }
   }
 });
 
-const { foodReceived, itemAdded, itemUpdated } = slice.actions;
+const { foodReceived, itemAdded, itemUpdated, itemDeleted } = slice.actions;
 
 export default slice.reducer;
 
@@ -48,10 +56,10 @@ export const addItem = (item) => (dispatch) => {
       data: item,
       onSuccess: itemAdded.type
     })
-  )
+  );
 };
 
-export const updateItem = (item, id) => dispatch => {
+export const updateItem = (item, id) => (dispatch) => {
   dispatch(
     apiCallBegan({
       url: `/foodItems/${id}`,
@@ -59,9 +67,17 @@ export const updateItem = (item, id) => dispatch => {
       data: item,
       onSuccess: itemUpdated.type
     })
-  )
-}
+  );
+};
+
+export const deleteItem = (id) => (dispatch) => {
+  dispatch(
+    apiCallBegan({
+      url: `/foodItems/${id}`,
+      method: "delete",
+      onSuccess: itemDeleted.type
+    })
+  );
+};
 // Selectors
 export const getFoodItems = (store) => store.entities.home.food;
-
-
