@@ -6,7 +6,8 @@ const slice = createSlice({
   name: "home",
   initialState: {
     food: [],
-    lastFetch: null
+    lastFetch: null,
+    category: "All",
   },
   reducers: {
     foodReceived: (home, action) => {
@@ -27,11 +28,20 @@ const slice = createSlice({
         (item) => item._id === action.payload._id
       );
       home.food.splice(ind, 1);
-    }
-  }
+    },
+    foodCategorized: (home, action) => {
+      home.category = action.payload.category;
+    },
+  },
 });
 
-const { foodReceived, itemAdded, itemUpdated, itemDeleted } = slice.actions;
+const {
+  foodReceived,
+  itemAdded,
+  itemUpdated,
+  itemDeleted,
+  foodCategorized,
+} = slice.actions;
 
 export default slice.reducer;
 
@@ -43,7 +53,7 @@ export const loadFood = () => (dispatch, getState) => {
     apiCallBegan({
       url: "/foodItems",
       onSuccess: foodReceived.type,
-      method: "get"
+      method: "get",
     })
   );
 };
@@ -54,7 +64,7 @@ export const addItem = (item) => (dispatch) => {
       url: `/foodItems`,
       method: "post",
       data: item,
-      onSuccess: itemAdded.type
+      onSuccess: itemAdded.type,
     })
   );
 };
@@ -65,7 +75,7 @@ export const updateItem = (item, id) => (dispatch) => {
       url: `/foodItems/${id}`,
       method: "put",
       data: item,
-      onSuccess: itemUpdated.type
+      onSuccess: itemUpdated.type,
     })
   );
 };
@@ -75,9 +85,13 @@ export const deleteItem = (id) => (dispatch) => {
     apiCallBegan({
       url: `/foodItems/${id}`,
       method: "delete",
-      onSuccess: itemDeleted.type
+      onSuccess: itemDeleted.type,
     })
   );
+};
+
+export const categorizeFood = (category) => (dispatch) => {
+  dispatch(foodCategorized({ category }));
 };
 // Selectors
 export const getFoodItems = (store) => store.entities.home.food;

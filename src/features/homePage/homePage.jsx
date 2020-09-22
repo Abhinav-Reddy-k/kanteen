@@ -7,13 +7,19 @@ import Header from "../header/headerComp";
 import "./homePage.css";
 import Features from "./features";
 import Items from "./items";
+import Categories from "./categories";
 
 const HomePage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadFood());
   });
-  const foodItems = useSelector((state) => state.entities.home.food);
+  const food = useSelector((state) => state.entities.home.food);
+  const category = useSelector((state) => state.entities.home.category);
+  let foodItems =
+    category != "All"
+      ? food.filter((item) => item.category === category)
+      : food;
 
   if (!getCurrentUser()) return <Redirect to={"/login"} />;
 
@@ -21,13 +27,15 @@ const HomePage = () => {
     <Fragment>
       <Header />
       <Features />
-      <div className="card-group">
+      {getCurrentUser().isAdmin && (
+        <Link to="/home/items/new" className="btn btn-primary">
+          Add new item
+        </Link>
+      )}
+      <Categories tabs={["All", "MilkShake", "Fried Rice", "Drinks"]} />
+      <div className="row">
         <Items foodItems={foodItems} />
       </div>
-      {foodItems.map((item) => (
-        <h1>{item.name}</h1>
-      ))}
-      <Link to="/home/items/new" className="btn btn-primary"> Add new item</Link>
     </Fragment>
   );
 };

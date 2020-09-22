@@ -14,17 +14,17 @@ class ItemForm extends Forms {
       name: "",
       url: "",
       category: "",
-      price: ""
+      price: "",
     },
     categories: ["MilkShake", "Fried Rice", "Drinks"],
-    errors: {}
+    errors: {},
   };
 
   schema = Joi.object({
     _id: Joi.string(),
-    name: Joi.string().required().label("Name"),
+    name: Joi.string().min(3).required().label("Name"),
     url: Joi.string(),
-    price: Joi.number().max(500).min(0).label("Price").required()
+    price: Joi.number().max(500).min(0).label("Price").required(),
   })
     .options({ abortEarly: false })
     .unknown(true);
@@ -33,7 +33,7 @@ class ItemForm extends Forms {
     try {
       const itemId = this.props.match.params.id;
       if (itemId === "new") return;
-      const item = this.props.foodItems.filter((item) => item._id == itemId);
+      const item = this.props.foodItems.filter((item) => item._id === itemId);
       // console.log(item);
       // console.log(itemId);
       this.setState({ data: item[0] });
@@ -82,12 +82,12 @@ class ItemForm extends Forms {
 }
 
 const mapStateToProps = (state) => ({
-  foodItems: state.entities.home.food
+  foodItems: state.entities.home.food,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addItem: (item) => dispatch(addItem(item)),
-  updateItem: (item, id) => dispatch(updateItem(item, id))
+  updateItem: (item, id) => dispatch(updateItem(item, id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemForm);

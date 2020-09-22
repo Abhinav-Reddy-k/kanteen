@@ -19,7 +19,7 @@ axios.interceptors.response.use(null, function (error) {
 const api = (store) => (next) => async (action) => {
   if (action.type !== apiCallBegan.type) return next(action);
   next(action);
-  const { url, onSuccess, onError, method, data, onLoading } = action.payload;
+  const { url, onSuccess, onError, method, data } = action.payload;
 
   try {
     const responce = await axios({
@@ -28,7 +28,7 @@ const api = (store) => (next) => async (action) => {
       method,
       data,
       onSuccess,
-      onError
+      onError,
     });
 
     // specific
