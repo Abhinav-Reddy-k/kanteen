@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import TextLoop from "react-text-loop";
 import {
   Container,
   Row,
   Column,
   Centered,
   Navbar,
-  DesktopList
+  DesktopList,
 } from "already-styled-components";
 import { getCurrentUser } from "../../services/authService";
 
@@ -100,8 +101,14 @@ export default function Header() {
             }
           >
             <Centered c="white" h="100%">
-              <h1>Whats on your mind?</h1>
-              <h3 className="display-4">{user["name"].toUpperCase()}</h3>
+              <h1>
+                Whats on your mind {user["name"].toUpperCase()} ?{" "}
+                <TextLoop springConfig={{ stiffness: 180, damping: 8 }}>
+                  <p>Icecreame</p>
+                  <p>MilkShake</p>
+                  <p>Panipuri</p>
+                </TextLoop>
+              </h1>
             </Centered>
           </BgImage>
         </Column>

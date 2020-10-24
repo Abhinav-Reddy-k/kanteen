@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { deleteItem } from "./homeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, deleteItem } from "./homeSlice";
 import { getCurrentUser } from "../../services/authService";
 
 function Card({ url, title, id, price }) {
@@ -9,6 +9,7 @@ function Card({ url, title, id, price }) {
     width: "18rem",
   };
   const dispatch = useDispatch();
+  const cartItems = useSelector((store) => store.entities.home.cart);
   return (
     <div className="card" style={cardStyle}>
       <img
@@ -20,7 +21,14 @@ function Card({ url, title, id, price }) {
       />
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
-        <button className="btn btn-primary">Add to cart</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => dispatch(addToCart(id))}
+        >
+          {cartItems.filter((item) => item === id).length === [].length
+            ? "Add to cart"
+            : " Remove from cart"}
+        </button>
         <p className="badge badge-dark m-2">{`₹ ${price}`}</p>
         {getCurrentUser().isAdmin && (
           <Fragment>

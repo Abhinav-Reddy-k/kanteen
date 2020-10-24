@@ -1,11 +1,14 @@
 import moment from "moment";
 import { apiCallBegan } from "../api";
+import { getCurrentUser, getUserCart } from "../../services/authService";
 const { createSlice } = require("@reduxjs/toolkit");
 
 const slice = createSlice({
   name: "home",
   initialState: {
     food: [],
+    cart: [],
+    user: getCurrentUser(),
     lastFetch: null,
     category: "All",
   },
@@ -13,6 +16,9 @@ const slice = createSlice({
     foodReceived: (home, action) => {
       home.food = action.payload;
       home.lastFetch = Date.now();
+    },
+    cartLoaded: (home, action) => {
+      home.cart = action.payload.cart;
     },
     itemAdded: (home, action) => {
       home.food.push(action.payload);
@@ -32,6 +38,9 @@ const slice = createSlice({
     foodCategorized: (home, action) => {
       home.category = action.payload.category;
     },
+    itemAddedToCart: (home, action) => {
+      home.cart = action.payload;
+    },
   },
 });
 
@@ -41,6 +50,8 @@ const {
   itemUpdated,
   itemDeleted,
   foodCategorized,
+  itemAddedToCart,
+  cartLoaded,
 } = slice.actions;
 
 export default slice.reducer;
@@ -54,6 +65,18 @@ export const loadFood = () => (dispatch, getState) => {
       url: "/foodItems",
       onSuccess: foodReceived.type,
       method: "get",
+    })
+  );
+};
+
+export const loadCart = () => (dispatch, getState) => {
+  const _id = getState().entities.home.user._id;
+  dispatch(
+    apiCallBegan({
+      url: "/users/me",
+      data: { _id },
+      method: "post",
+      onSuccess: cartLoaded.type,
     })
   );
 };
@@ -86,6 +109,18 @@ export const deleteItem = (id) => (dispatch) => {
       url: `/foodItems/${id}`,
       method: "delete",
       onSuccess: itemDeleted.type,
+    })
+  );
+};
+
+export const addToCart = (cartFoodId) => (dispatch, getState) => {
+  const userId = getState().entities.home.user._id;
+  dispatch(
+    apiCallBegan({
+      method: "post",
+      url: `/users/cart`,
+      data: { cartFoodId, userId },
+      onSuccess: itemAddedToCart.type,
     })
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, Fragment } from "react";
 import { getCurrentUser } from "./../../services/authService";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loadFood } from "./homeSlice";
+import { loadFood, loadCart } from "./homeSlice";
 import Header from "../header/headerComp";
 import "./homePage.css";
 import Features from "./features";
@@ -13,6 +13,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadFood());
+    dispatch(loadCart());
   });
   const food = useSelector((state) => state.entities.home.food);
   const category = useSelector((state) => state.entities.home.category);
