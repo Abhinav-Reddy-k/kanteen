@@ -38,7 +38,7 @@ const slice = createSlice({
     foodCategorized: (home, action) => {
       home.category = action.payload.category;
     },
-    itemAddedToCart: (home, action) => {
+    itemAddedRemovedToCart: (home, action) => {
       home.cart = action.payload;
     },
   },
@@ -50,7 +50,7 @@ const {
   itemUpdated,
   itemDeleted,
   foodCategorized,
-  itemAddedToCart,
+  itemAddedRemovedToCart,
   cartLoaded,
 } = slice.actions;
 
@@ -113,14 +113,14 @@ export const deleteItem = (id) => (dispatch) => {
   );
 };
 
-export const addToCart = (cartFoodId) => (dispatch, getState) => {
+export const addRemoveCart = (cartFoodId, bool) => (dispatch, getState) => {
   const userId = getState().entities.home.user._id;
   dispatch(
     apiCallBegan({
       method: "post",
-      url: `/users/cart`,
+      url: `/users/${bool ? "cart" : "removecart"}`,
       data: { cartFoodId, userId },
-      onSuccess: itemAddedToCart.type,
+      onSuccess: itemAddedRemovedToCart.type,
     })
   );
 };
