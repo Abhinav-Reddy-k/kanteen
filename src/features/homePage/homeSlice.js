@@ -1,6 +1,7 @@
 import moment from "moment";
 import { apiCallBegan } from "../api";
-import { getCurrentUser, getUserCart } from "../../services/authService";
+import { getCurrentUser } from "../../services/authService";
+import { toast } from "react-toastify";
 const { createSlice } = require("@reduxjs/toolkit");
 
 const slice = createSlice({
@@ -10,7 +11,7 @@ const slice = createSlice({
     cart: [],
     user: getCurrentUser(),
     lastFetch: null,
-    category: "All",
+    category: "All"
   },
   reducers: {
     foodReceived: (home, action) => {
@@ -19,6 +20,7 @@ const slice = createSlice({
     },
     cartLoaded: (home, action) => {
       home.cart = action.payload.cart;
+      // home.user = action.payload;
     },
     itemAdded: (home, action) => {
       home.food.push(action.payload);
@@ -34,14 +36,15 @@ const slice = createSlice({
         (item) => item._id === action.payload._id
       );
       home.food.splice(ind, 1);
+      toast.success("Item deleted successfully");
     },
     foodCategorized: (home, action) => {
       home.category = action.payload.category;
     },
     itemAddedRemovedToCart: (home, action) => {
       home.cart = action.payload;
-    },
-  },
+    }
+  }
 });
 
 const {
@@ -51,7 +54,7 @@ const {
   itemDeleted,
   foodCategorized,
   itemAddedRemovedToCart,
-  cartLoaded,
+  cartLoaded
 } = slice.actions;
 
 export default slice.reducer;
@@ -64,7 +67,7 @@ export const loadFood = () => (dispatch, getState) => {
     apiCallBegan({
       url: "/foodItems",
       onSuccess: foodReceived.type,
-      method: "get",
+      method: "get"
     })
   );
 };
@@ -76,7 +79,7 @@ export const loadCart = () => (dispatch, getState) => {
       url: "/users/me",
       data: { _id },
       method: "post",
-      onSuccess: cartLoaded.type,
+      onSuccess: cartLoaded.type
     })
   );
 };
@@ -87,7 +90,7 @@ export const addItem = (item) => (dispatch) => {
       url: `/foodItems`,
       method: "post",
       data: item,
-      onSuccess: itemAdded.type,
+      onSuccess: itemAdded.type
     })
   );
 };
@@ -98,7 +101,7 @@ export const updateItem = (item, id) => (dispatch) => {
       url: `/foodItems/${id}`,
       method: "put",
       data: item,
-      onSuccess: itemUpdated.type,
+      onSuccess: itemUpdated.type
     })
   );
 };
@@ -108,7 +111,7 @@ export const deleteItem = (id) => (dispatch) => {
     apiCallBegan({
       url: `/foodItems/${id}`,
       method: "delete",
-      onSuccess: itemDeleted.type,
+      onSuccess: itemDeleted.type
     })
   );
 };
@@ -120,7 +123,7 @@ export const addRemoveCart = (cartFoodId, bool) => (dispatch, getState) => {
       method: "post",
       url: `/users/${bool ? "cart" : "removecart"}`,
       data: { cartFoodId, userId },
-      onSuccess: itemAddedRemovedToCart.type,
+      onSuccess: itemAddedRemovedToCart.type
     })
   );
 };

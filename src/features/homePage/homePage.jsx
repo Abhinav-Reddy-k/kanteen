@@ -18,7 +18,7 @@ const HomePage = () => {
   const food = useSelector((state) => state.entities.home.food);
   const category = useSelector((state) => state.entities.home.category);
   let foodItems =
-    category != "All"
+    category !== "All"
       ? food.filter((item) => item.category === category)
       : food;
 

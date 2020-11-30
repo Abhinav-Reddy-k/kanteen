@@ -6,11 +6,11 @@ import { getCurrentUser } from "../../services/authService";
 
 function Card({ url, title, id, price }) {
   const cardStyle = {
-    width: "18rem",
+    width: "18rem"
   };
   const dispatch = useDispatch();
   const cartItems = useSelector((store) => store.entities.home.cart);
-  const bool = cartItems.filter((item) => item === id).length === 0;
+  const bool = cartItems.filter((item) => item.item === id).length === 0;
   return (
     <div className="card" style={cardStyle}>
       <img

@@ -11,6 +11,7 @@ import NavBar from "./features/stateless/navbar";
 import ItemForm from "./features/admin/itemForm";
 import "react-toastify/dist/ReactToastify.css";
 import { getCurrentUser } from "./services/authService";
+import Cart from "./features/cart/cart";
 
 function App() {
   let user = "";
@@ -23,6 +24,7 @@ function App() {
         <Switch>
           <Route path="/register" component={Register} />
           <Route path="/login" component={LoginForm} />
+          <Route path="/cart" component={Cart} />
           <Route path="/logout" component={Logout} />
           <Route path="/home/items/:id" component={ItemForm} />
           <Route path="/pageNotFound" component={PageNotFound} />
