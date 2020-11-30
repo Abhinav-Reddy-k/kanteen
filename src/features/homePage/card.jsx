@@ -3,47 +3,61 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addRemoveCart, deleteItem } from "./homeSlice";
 import { getCurrentUser } from "../../services/authService";
+import "./card.css";
 
 function Card({ url, title, id, price }) {
-  const cardStyle = {
-    width: "18rem"
-  };
   const dispatch = useDispatch();
   const cartItems = useSelector((store) => store.entities.home.cart);
   const bool = cartItems.filter((item) => item.item === id).length === 0;
+  const cartStyle = bool ? {} : { background: "#e67e22", color: "#fff" };
   return (
-    <div className="card" style={cardStyle}>
-      <img
-        src={url}
-        className="card-img-top"
-        alt="..."
-        width="20"
-        height="300"
-      />
-      <div className="card-body">
-        <h5 className="card-title">{title}</h5>
-        <button
-          className="btn btn-primary"
-          onClick={() => dispatch(addRemoveCart(id, bool))}
-        >
-          {bool ? "Add to cart" : " Remove from cart"}
-        </button>
-        <p className="badge badge-dark m-2">{`₹ ${price}`}</p>
+    <Fragment>
+      <div className="col-md-3 col-sm-6">
+        <div className="product-grid3">
+          <div className="product-image3">
+            <a href="#">
+              <img className="pic-1" width="300" height="400" src={url} />
+              <img className="pic-2" width="300" height="400" src={url} />
+            </a>
+            <ul className="social">
+              <li><button><i className="fa fa-shopping-bag"></i></button></li>
+              <li><button style={cartStyle} onClick={() => dispatch(addRemoveCart(id, bool))}><i className="fa fa-shopping-cart" ></i></button></li>
+            </ul>
+            <span className="product-new-label">New</span>
+          </div>
+          <div className="product-content">
+            <h3 className="title"><a href="#">{title}</a></h3>
+            <div className="price">
+              {`₹ ${price}`}
+              <span>{`₹ ${price + 5}`}</span>
+            </div>
+            <ul className="rating">
+              <li className="fa fa-star"></li>
+              <li className="fa fa-star"></li>
+              <li className="fa fa-star"></li>
+              <li className="fa fa-star disable"></li>
+              <li className="fa fa-star disable"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div>
         {getCurrentUser().isAdmin && (
           <Fragment>
             <button
-              className="btn btn-danger"
+              classNameName="btn btn-danger"
               onClick={() => dispatch(deleteItem(id))}
             >
               Delete
             </button>
-            <Link to={`home/items/${id}`} className="btn">
+            <Link to={`home/items/${id}`} classNameName="btn">
               Edit
             </Link>
           </Fragment>
         )}
       </div>
-    </div>
+      <hr></hr>
+    </Fragment>
   );
 }
 

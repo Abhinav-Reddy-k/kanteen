@@ -43,7 +43,14 @@ const slice = createSlice({
     },
     itemAddedRemovedToCart: (home, action) => {
       home.cart = action.payload;
-    }
+    },
+    quantityUpdated: (home,action) => {
+      const ind = home.cart.findIndex(
+        obj => obj.item === action.payload.cartFoodId
+      );
+      console.log(ind);
+      home.cart[ind].quantity = action.payload.quantity
+    },
   }
 });
 
@@ -54,7 +61,8 @@ const {
   itemDeleted,
   foodCategorized,
   itemAddedRemovedToCart,
-  cartLoaded
+  cartLoaded,
+  quantityUpdated
 } = slice.actions;
 
 export default slice.reducer;
@@ -127,6 +135,18 @@ export const addRemoveCart = (cartFoodId, bool) => (dispatch, getState) => {
     })
   );
 };
+
+export const setQuantity = (cartFoodId, quantity) => (dispatch,getState) => {
+  const userId = getState().entities.home.user._id;
+  dispatch(
+    apiCallBegan({
+      method:"post",
+      url:`/users/setQuantity`,
+      data : {cartFoodId, userId, quantity},
+      onSuccess: quantityUpdated.type
+    })
+  )
+}
 
 export const categorizeFood = (category) => (dispatch) => {
   dispatch(foodCategorized({ category }));

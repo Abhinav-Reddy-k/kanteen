@@ -1,174 +1,106 @@
 import React, { Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setQuantity } from "../homePage/homeSlice";
 import "./cart.css";
 
 function Cart() {
+  const cart = useSelector((state) => state.entities.home.cart);
+  const food = useSelector((state) => state.entities.home.food);
+  const dispatch = useDispatch();
+
   return (
     <Fragment>
-      <div className="container">
-        <div className="wrapper wrapper-content animated fadeInRight">
-          <div className="row">
-            <div className="col-md-9">
-              <div className="ibox">
-                <div className="ibox-title">
-                  <span className="pull-right">
-                    (<strong>5</strong>) items
-                  </span>
-                  <h5>Items in your cart</h5>
-                </div>
-                <div className="ibox-content">
-                  <div className="table-responsive">
-                    <table className="table shoping-cart-table">
-                      <tbody>
+      <div class="cart-wrap">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="main-heading">Shopping Cart</div>
+              <div class="table-cart">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Quantity</th>
+                      <th>Total</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cart.map(obj => {
+                      let data = food.filter(item => item._id === obj.item);
+                      // console.log(data);
+                      return (
                         <tr>
-                          <td width="90">
-                            <div className="cart-product-imitation"></div>
-                          </td>
-                          <td className="desc">
-                            <h3>
-                              <a href="#" className="text-navy">
-                                Desktop publishing software
-                              </a>
-                            </h3>
-                            <p className="small">
-                              It is a long established fact that a reader will
-                              be distracted by the readable content of a page
-                              when looking at its layout. The point of using
-                              Lorem Ipsum is
-                            </p>
-                            <dl className="small m-b-none">
-                              <dt>Description lists</dt>
-                              <dd>
-                                A description list is perfect for defining
-                                terms.
-                              </dd>
-                            </dl>
-
-                            <div className="m-t-sm">
-                              <a href="#" className="text-muted">
-                                <i className="fa fa-gift"></i> Add gift package
-                              </a>
-                              |
-                              <a href="#" className="text-muted">
-                                <i className="fa fa-trash"></i> Remove item
-                              </a>
+                          <td>
+                            <div class="display-flex align-center">
+                              <div class="img-product">
+                                <img src={data[0].url} class="mCS_img_loaded" />
+                              </div>
+                              <div class="name-product">
+                                {data[0].name}
+                                <br />
+                              </div>
+                              <div class="price">
+                                {data[0].price}
+                              </div>
                             </div>
                           </td>
-
-                          <td>
-                            $180,00
-                            <s className="small text-muted">$230,00</s>
-                          </td>
-                          <td width="65">
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="1"
-                            />
+                          <td class="product-count">
+                            <form action="#" class="count-inlineflex">
+                              <div onClick={() => dispatch(setQuantity(obj.item,obj.quantity-1))} class="qtyminus">-</div>
+                              <input type="text" name="quantity" value={obj.quantity} class="qty" />
+                              <div onClick={() => dispatch(setQuantity(obj.item,obj.quantity+1))} class="qtyplus">+</div>
+                            </form>
                           </td>
                           <td>
-                            <h4>$180,00</h4>
+                            <div class="total">
+                              {data[0].price*obj.quantity}
+	                                    </div>
                           </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <div className="ibox-content">
-                  <button className="btn btn-primary pull-right">
-                    <i className="fa fa fa-shopping-cart"></i> Checkout
-                  </button>
-                  <button className="btn btn-white">
-                    <i className="fa fa-arrow-left"></i> Continue shopping
-                  </button>
+                          <td>
+                            <a href="#" title="">
+                              <img src="images/icons/delete.png" alt="" class="mCS_img_loaded" />
+                            </a>
+                          </td>
+                        </tr>)
+                    })}
+                  </tbody>
+                </table>
+                <div class="coupon-box">
+                  <form action="#" method="get" accept-charset="utf-8">
+                    <div class="coupon-input">
+                      <input type="text" name="coupon code" placeholder="Coupon Code" />
+                      <button type="submit" class="round-black-btn">Apply Coupon</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
-              <div className="ibox">
-                <div className="ibox-title">
-                  <h5>Cart Summary</h5>
-                </div>
-                <div className="ibox-content">
-                  <span>Total</span>
-                  <h2 className="font-bold">$390,00</h2>
-
-                  <hr />
-                  <span className="text-muted small">
-                    *For United States, France and Germany applicable sales tax
-                    will be applied
-                  </span>
-                  <div className="m-t-sm">
-                    <div className="btn-group">
-                      <a href="#" className="btn btn-primary btn-sm">
-                        <i className="fa fa-shopping-cart"></i> Checkout
-                      </a>
-                      <a href="#" className="btn btn-white btn-sm">
-                        {" "}
-                        Cancel
-                      </a>
-                    </div>
+            <div class="col-lg-4">
+              <div class="cart-totals">
+                <h3>Cart Totals</h3>
+                <form action="#" method="get" accept-charset="utf-8">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>Subtotal</td>
+                        <td class="subtotal">$2,589.00</td>
+                      </tr>
+                      <tr>
+                        <td>Shipping</td>
+                        <td class="free-shipping">Free Shipping</td>
+                      </tr>
+                      <tr class="total-row">
+                        <td>Total</td>
+                        <td class="price-total">$1,591.00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="btn-cart-totals">
+                    <a href="#" class="update round-black-btn" title="">Update Cart</a>
+                    <a href="#" class="checkout round-black-btn" title="">Proceed to Checkout</a>
                   </div>
-                </div>
-              </div>
-
-              <div className="ibox">
-                <div className="ibox-title">
-                  <h5>Support</h5>
-                </div>
-                <div className="ibox-content text-center">
-                  <h3>
-                    <i className="fa fa-phone"></i> +43 100 783 001
-                  </h3>
-                  <span className="small">
-                    Please contact with us if you have any questions. We are
-                    avalible 24h.
-                  </span>
-                </div>
-              </div>
-
-              <div className="ibox">
-                <div className="ibox-content">
-                  <p className="font-bold">
-                    Other products you may be interested
-                  </p>
-                  <hr />
-                  <div>
-                    <a href="#" className="product-name">
-                      {" "}
-                      Product 1
-                    </a>
-                    <div className="small m-t-xs">
-                      Many desktop publishing packages and web page editors now.
-                    </div>
-                    <div className="m-t text-righ">
-                      <a
-                        href="#"
-                        className="btn btn-xs btn-outline btn-primary"
-                      >
-                        Info <i className="fa fa-long-arrow-right"></i>{" "}
-                      </a>
-                    </div>
-                  </div>
-                  <hr />
-                  <div>
-                    <a href="#" className="product-name">
-                      {" "}
-                      Product 2
-                    </a>
-                    <div className="small m-t-xs">
-                      Many desktop publishing packages and web page editors now.
-                    </div>
-                    <div className="m-t text-righ">
-                      <a
-                        href="#"
-                        className="btn btn-xs btn-outline btn-primary"
-                      >
-                        Info <i className="fa fa-long-arrow-right"></i>{" "}
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>

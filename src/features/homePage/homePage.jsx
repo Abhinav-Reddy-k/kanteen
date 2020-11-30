@@ -34,7 +34,7 @@ const HomePage = () => {
         </Link>
       )}
       <Categories tabs={["All", "MilkShake", "Fried Rice", "Drinks"]} />
-      <div className="row">
+      <div className="container row">
         <Items foodItems={foodItems} />
       </div>
     </Fragment>
