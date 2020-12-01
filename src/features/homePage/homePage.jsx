@@ -8,6 +8,8 @@ import "./homePage.css";
 import Features from "./features";
 import Items from "./items";
 import Categories from "./categories";
+import ScrollUpButton from "react-scroll-up-button";
+
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -37,6 +39,7 @@ const HomePage = () => {
       <div className="container row">
         <Items foodItems={foodItems} />
       </div>
+      <ScrollUpButton />
     </Fragment>
   );
 };

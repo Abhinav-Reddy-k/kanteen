@@ -3,6 +3,7 @@ import { apiCallBegan } from "../api";
 import { getCurrentUser } from "../../services/authService";
 import { toast } from "react-toastify";
 const { createSlice } = require("@reduxjs/toolkit");
+let cartBool;
 
 const slice = createSlice({
   name: "home",
@@ -43,6 +44,7 @@ const slice = createSlice({
     },
     itemAddedRemovedToCart: (home, action) => {
       home.cart = action.payload;
+      cartBool ? toast.success("Added to cart") : toast.error("Removed from cart")
     },
     quantityUpdated: (home,action) => {
       const ind = home.cart.findIndex(
@@ -51,6 +53,9 @@ const slice = createSlice({
       console.log(ind);
       home.cart[ind].quantity = action.payload.quantity
     },
+    cartEmptied : (home,action) => {
+      home.cart = action.payload;
+    }
   }
 });
 
@@ -62,7 +67,8 @@ const {
   foodCategorized,
   itemAddedRemovedToCart,
   cartLoaded,
-  quantityUpdated
+  quantityUpdated,
+  cartEmptied,
 } = slice.actions;
 
 export default slice.reducer;
@@ -126,6 +132,7 @@ export const deleteItem = (id) => (dispatch) => {
 
 export const addRemoveCart = (cartFoodId, bool) => (dispatch, getState) => {
   const userId = getState().entities.home.user._id;
+  cartBool = bool;
   dispatch(
     apiCallBegan({
       method: "post",
@@ -147,6 +154,19 @@ export const setQuantity = (cartFoodId, quantity) => (dispatch,getState) => {
     })
   )
 }
+
+export const emptyCart = () => (dispatch,getState) => {
+  const userId = getState().entities.home.user._id;
+  dispatch(
+    apiCallBegan({
+      method:"post",
+      url:`/users/emptycart`,
+      data : {userId},
+      onSuccess: cartEmptied.type
+    })
+  )
+}
+
 
 export const categorizeFood = (category) => (dispatch) => {
   dispatch(foodCategorized({ category }));

@@ -5,7 +5,7 @@ import { addRemoveCart, deleteItem } from "./homeSlice";
 import { getCurrentUser } from "../../services/authService";
 import "./card.css";
 
-function Card({ url, title, id, price }) {
+function Card({ url,url2, title, id, price }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((store) => store.entities.home.cart);
   const bool = cartItems.filter((item) => item.item === id).length === 0;
@@ -15,10 +15,10 @@ function Card({ url, title, id, price }) {
       <div className="col-md-3 col-sm-6">
         <div className="product-grid3">
           <div className="product-image3">
-            <a href="#">
-              <img className="pic-1" width="300" height="400" src={url} />
-              <img className="pic-2" width="300" height="400" src={url} />
-            </a>
+            <p>
+              <img className="pic-1" src={url} />
+              <img className="pic-2" src={url2} />
+            </p>
             <ul className="social">
               <li><button><i className="fa fa-shopping-bag"></i></button></li>
               <li><button style={cartStyle} onClick={() => dispatch(addRemoveCart(id, bool))}><i className="fa fa-shopping-cart" ></i></button></li>

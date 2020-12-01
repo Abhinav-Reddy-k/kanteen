@@ -1,21 +1,22 @@
 import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuantity } from "../homePage/homeSlice";
+import { addRemoveCart, emptyCart, setQuantity } from "../homePage/homeSlice";
 import "./cart.css";
 
 function Cart() {
   const cart = useSelector((state) => state.entities.home.cart);
   const food = useSelector((state) => state.entities.home.food);
   const dispatch = useDispatch();
+  let totalPrice = 0;
 
   return (
     <Fragment>
-      <div class="cart-wrap">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-8">
-              <div class="main-heading">Shopping Cart</div>
-              <div class="table-cart">
+      <div className="cart-wrap">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8">
+              <div className="main-heading">Shopping Cart</div>
+              <div className="table-cart">
                 <table>
                   <thead>
                     <tr>
@@ -28,77 +29,79 @@ function Cart() {
                   <tbody>
                     {cart.map(obj => {
                       let data = food.filter(item => item._id === obj.item);
-                      // console.log(data);
+                      let qtyminusStyle = obj.quantity === 1 ? {pointerEvents:"none"} : {};
+                      totalPrice += data[0].price * obj.quantity;
                       return (
                         <tr>
                           <td>
-                            <div class="display-flex align-center">
-                              <div class="img-product">
-                                <img src={data[0].url} class="mCS_img_loaded" />
+                            <div className="display-flex align-center">
+                              <div className="img-product">
+                                <img src={data[0].url} className="mCS_img_loaded" />
                               </div>
-                              <div class="name-product">
+                              <div className="name-product">
                                 {data[0].name}
                                 <br />
                               </div>
-                              <div class="price">
+                              <div className="price">
                                 {data[0].price}
                               </div>
                             </div>
                           </td>
-                          <td class="product-count">
-                            <form action="#" class="count-inlineflex">
-                              <div onClick={() => dispatch(setQuantity(obj.item,obj.quantity-1))} class="qtyminus">-</div>
-                              <input type="text" name="quantity" value={obj.quantity} class="qty" />
-                              <div onClick={() => dispatch(setQuantity(obj.item,obj.quantity+1))} class="qtyplus">+</div>
+                          <td className="product-count">
+                            <form action="#" className="count-inlineflex">
+                              <div style={qtyminusStyle} onClick={() => dispatch(setQuantity(obj.item, obj.quantity - 1))} className="qtyminus">-</div>
+                              <input type="text" name="quantity" value={obj.quantity} className="qty" />
+                              <div onClick={() => dispatch(setQuantity(obj.item, obj.quantity + 1))} className="qtyplus">+</div>
                             </form>
                           </td>
                           <td>
-                            <div class="total">
-                              {data[0].price*obj.quantity}
-	                                    </div>
+                            <div className="total">
+                              {data[0].price * obj.quantity}
+                            </div>
                           </td>
                           <td>
-                            <a href="#" title="">
-                              <img src="images/icons/delete.png" alt="" class="mCS_img_loaded" />
-                            </a>
+                            <button className="btn btn-dark btn-sm" onClick={() => dispatch(addRemoveCart(obj.item, false))}>
+                              <i className="fa fa-trash"></i>
+                            </button>
                           </td>
                         </tr>)
                     })}
                   </tbody>
                 </table>
-                <div class="coupon-box">
+                <div className="coupon-box">
                   <form action="#" method="get" accept-charset="utf-8">
-                    <div class="coupon-input">
+                    <div className="coupon-input">
                       <input type="text" name="coupon code" placeholder="Coupon Code" />
-                      <button type="submit" class="round-black-btn">Apply Coupon</button>
+                      <button type="submit" className="round-black-btn">Apply Coupon</button>
                     </div>
                   </form>
                 </div>
               </div>
             </div>
-            <div class="col-lg-4">
-              <div class="cart-totals">
+            <div className="col-lg-4">
+              <div className="cart-totals">
                 <h3>Cart Totals</h3>
                 <form action="#" method="get" accept-charset="utf-8">
                   <table>
                     <tbody>
                       <tr>
                         <td>Subtotal</td>
-                        <td class="subtotal">$2,589.00</td>
+                        <td className="subtotal">{totalPrice}</td>
                       </tr>
                       <tr>
                         <td>Shipping</td>
-                        <td class="free-shipping">Free Shipping</td>
+                        <td className="free-shipping">Free Shipping</td>
                       </tr>
-                      <tr class="total-row">
+                      <tr className="total-row">
                         <td>Total</td>
-                        <td class="price-total">$1,591.00</td>
+                        <td className="price-total">{totalPrice}</td>
                       </tr>
                     </tbody>
                   </table>
-                  <div class="btn-cart-totals">
-                    <a href="#" class="update round-black-btn" title="">Update Cart</a>
-                    <a href="#" class="checkout round-black-btn" title="">Proceed to Checkout</a>
+                  <div className="btn-cart-totals">
+                    <a onClick={() => dispatch(emptyCart())} className="update round-black-btn" title="">Empty Cart</a>
+                    <hr />
+                    <a href="#" className="checkout round-black-btn" title="">Proceed to Checkout</a>
                   </div>
                 </form>
               </div>

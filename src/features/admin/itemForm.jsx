@@ -13,6 +13,7 @@ class ItemForm extends Forms {
       _id: "new",
       name: "",
       url: "",
+      url2:"",
       category: "",
       price: "",
     },
@@ -73,6 +74,7 @@ class ItemForm extends Forms {
           {this.renderInput("name", "Name")}
           {this.renderSelect("category", this.state.categories)}
           {this.renderInput("url", "Image url")}
+          {this.renderInput("url2", "Image url2")}
           {this.renderInput("price", "Price")}
           {this.renderButton("Save")}
         </form>

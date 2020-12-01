@@ -75,6 +75,7 @@
     color: #000;
     cursor: pointer;
     font-weight: 600;
+    border: transparent;
 }
 .product-count .qtyminus {
     line-height: 32px;
