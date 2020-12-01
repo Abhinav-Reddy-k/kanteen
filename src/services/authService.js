@@ -2,11 +2,6 @@ import jwt_decode from "jwt-decode";
 
 import { apiUrl } from "../config.json";
 import { http } from "../middleware/api";
-import { useSelector } from "react-redux";
-
-function authUrl(id) {
-  return `${apiUrl}/auth/${id}`;
-}
 
 export async function login(email, password) {
   const { data: jwt } = await http.post(`${apiUrl}/auth`, { email, password });

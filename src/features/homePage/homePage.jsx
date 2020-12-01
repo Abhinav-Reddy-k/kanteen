@@ -8,6 +8,8 @@ import "./homePage.css";
 import Features from "./features";
 import Items from "./items";
 import Categories from "./categories";
+import ScrollUpButton from "react-scroll-up-button";
+
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -18,7 +20,7 @@ const HomePage = () => {
   const food = useSelector((state) => state.entities.home.food);
   const category = useSelector((state) => state.entities.home.category);
   let foodItems =
-    category != "All"
+    category !== "All"
       ? food.filter((item) => item.category === category)
       : food;
 
@@ -34,9 +36,10 @@ const HomePage = () => {
         </Link>
       )}
       <Categories tabs={["All", "MilkShake", "Fried Rice", "Drinks"]} />
-      <div className="row">
+      <div className="container row">
         <Items foodItems={foodItems} />
       </div>
+      <ScrollUpButton />
     </Fragment>
   );
 };
