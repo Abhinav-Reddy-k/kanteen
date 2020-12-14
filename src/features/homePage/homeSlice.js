@@ -12,7 +12,7 @@ const slice = createSlice({
     cart: [],
     user: getCurrentUser(),
     lastFetch: null,
-    category: "All"
+    category: "All",
   },
   reducers: {
     foodReceived: (home, action) => {
@@ -44,19 +44,21 @@ const slice = createSlice({
     },
     itemAddedRemovedToCart: (home, action) => {
       home.cart = action.payload;
-      cartBool ? toast.success("Added to cart") : toast.error("Removed from cart")
+      cartBool
+        ? toast.success("Added to cart")
+        : toast.error("Removed from cart");
     },
-    quantityUpdated: (home,action) => {
+    quantityUpdated: (home, action) => {
       const ind = home.cart.findIndex(
-        obj => obj.item === action.payload.cartFoodId
+        (obj) => obj.item === action.payload.cartFoodId
       );
       console.log(ind);
-      home.cart[ind].quantity = action.payload.quantity
+      home.cart[ind].quantity = action.payload.quantity;
     },
-    cartEmptied : (home,action) => {
+    cartEmptied: (home, action) => {
       home.cart = action.payload;
-    }
-  }
+    },
+  },
 });
 
 const {
@@ -81,7 +83,7 @@ export const loadFood = () => (dispatch, getState) => {
     apiCallBegan({
       url: "/foodItems",
       onSuccess: foodReceived.type,
-      method: "get"
+      method: "get",
     })
   );
 };
@@ -93,7 +95,7 @@ export const loadCart = () => (dispatch, getState) => {
       url: "/users/me",
       data: { _id },
       method: "post",
-      onSuccess: cartLoaded.type
+      onSuccess: cartLoaded.type,
     })
   );
 };
@@ -104,7 +106,7 @@ export const addItem = (item) => (dispatch) => {
       url: `/foodItems`,
       method: "post",
       data: item,
-      onSuccess: itemAdded.type
+      onSuccess: itemAdded.type,
     })
   );
 };
@@ -115,7 +117,7 @@ export const updateItem = (item, id) => (dispatch) => {
       url: `/foodItems/${id}`,
       method: "put",
       data: item,
-      onSuccess: itemUpdated.type
+      onSuccess: itemUpdated.type,
     })
   );
 };
@@ -125,7 +127,14 @@ export const deleteItem = (id) => (dispatch) => {
     apiCallBegan({
       url: `/foodItems/${id}`,
       method: "delete",
-      onSuccess: itemDeleted.type
+      onSuccess: itemDeleted.type,
+    })
+  );
+  dispatch(
+    apiCallBegan({
+      url: `/users/removeDeletedItem`,
+      method: "post",
+      data: { cartFoodId: id },
     })
   );
 };
@@ -138,35 +147,34 @@ export const addRemoveCart = (cartFoodId, bool) => (dispatch, getState) => {
       method: "post",
       url: `/users/${bool ? "cart" : "removecart"}`,
       data: { cartFoodId, userId },
-      onSuccess: itemAddedRemovedToCart.type
+      onSuccess: itemAddedRemovedToCart.type,
     })
   );
 };
 
-export const setQuantity = (cartFoodId, quantity) => (dispatch,getState) => {
+export const setQuantity = (cartFoodId, quantity) => (dispatch, getState) => {
   const userId = getState().entities.home.user._id;
   dispatch(
     apiCallBegan({
-      method:"post",
-      url:`/users/setQuantity`,
-      data : {cartFoodId, userId, quantity},
-      onSuccess: quantityUpdated.type
+      method: "post",
+      url: `/users/setQuantity`,
+      data: { cartFoodId, userId, quantity },
+      onSuccess: quantityUpdated.type,
     })
-  )
-}
+  );
+};
 
-export const emptyCart = () => (dispatch,getState) => {
+export const emptyCart = () => (dispatch, getState) => {
   const userId = getState().entities.home.user._id;
   dispatch(
     apiCallBegan({
-      method:"post",
-      url:`/users/emptycart`,
-      data : {userId},
-      onSuccess: cartEmptied.type
+      method: "post",
+      url: `/users/emptycart`,
+      data: { userId },
+      onSuccess: cartEmptied.type,
     })
-  )
-}
-
+  );
+};
 
 export const categorizeFood = (category) => (dispatch) => {
   dispatch(foodCategorized({ category }));
