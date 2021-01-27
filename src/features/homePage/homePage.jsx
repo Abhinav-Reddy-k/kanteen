@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment } from "react";
-import { getCurrentUser } from "./../../services/authService";
+import { getCurrentUser } from "../../services/authService";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadFood, loadCart } from "./homeSlice";
@@ -10,12 +10,11 @@ import Items from "./items";
 import Categories from "./categories";
 import ScrollUpButton from "react-scroll-up-button";
 
-
 const HomePage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadFood());
-    dispatch(loadCart());
+    if (getCurrentUser()) dispatch(loadCart());
   });
   const food = useSelector((state) => state.entities.home.food);
   const category = useSelector((state) => state.entities.home.category);
@@ -35,10 +34,11 @@ const HomePage = () => {
           Add new item
         </Link>
       )}
-      <Categories tabs={["All", "MilkShake", "Fried Rice", "Drinks"]} />
-      <div className="container row">
-        <Items foodItems={foodItems} />
-      </div>
+      <Categories
+        active={category}
+        tabs={["All", "MilkShake", "Fried Rice", "Drinks"]}
+      />
+      <Items className="container" foodItems={foodItems} />
       <ScrollUpButton />
     </Fragment>
   );

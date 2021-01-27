@@ -2,21 +2,24 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { categorizeFood } from "./homeSlice";
 
-const Categories = ({ tabs }) => {
+const Categories = ({ tabs, active }) => {
   const dispatch = useDispatch();
   return (
-    <ul className="nav nav-tabs">
-      {tabs.map((tab) => (
-        <li className="nav-item">
-          <button
-            className="nav-link"
-            onClick={() => dispatch(categorizeFood(tab))}
-          >
-            {tab}
-          </button>
-        </li>
-      ))}
-    </ul>
+    <div className="row justify-content-around">
+      <ul className="nav nav-tabs">
+        {tabs.map((tab) => (
+          <li className="nav-item">
+            <a
+              type="button"
+              className={tab == active ? "nav-link active" : "nav-link"}
+              onClick={() => dispatch(categorizeFood(tab))}
+            >
+              {tab}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

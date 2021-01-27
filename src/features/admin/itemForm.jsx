@@ -13,9 +13,11 @@ class ItemForm extends Forms {
       _id: "new",
       name: "",
       url: "",
-      url2:"",
+      url2: "",
       category: "",
       price: "",
+      discount: "",
+      label: "",
     },
     categories: ["MilkShake", "Fried Rice", "Drinks"],
     errors: {},
@@ -26,6 +28,8 @@ class ItemForm extends Forms {
     name: Joi.string().min(3).required().label("Name"),
     url: Joi.string(),
     price: Joi.number().max(500).min(0).label("Price").required(),
+    // discount: Joi.number(),
+    // label: Joi.string(),
   })
     .options({ abortEarly: false })
     .unknown(true);
@@ -35,8 +39,6 @@ class ItemForm extends Forms {
       const itemId = this.props.match.params.id;
       if (itemId === "new") return;
       const item = this.props.foodItems.filter((item) => item._id === itemId);
-      // console.log(item);
-      // console.log(itemId);
       this.setState({ data: item[0] });
     } catch (error) {
       if (error.response && error.response.status === 404)
@@ -49,7 +51,7 @@ class ItemForm extends Forms {
   }
 
   doSubmit = () => {
-    const user = getCurrentUser();
+    const user = this.props.user;
     if (user && user.isAdmin) {
       const item = this.state.data;
       if (item._id !== "new") {
@@ -76,6 +78,8 @@ class ItemForm extends Forms {
           {this.renderInput("url", "Image url")}
           {this.renderInput("url2", "Image url2")}
           {this.renderInput("price", "Price")}
+          {this.renderInput("discount", "Discount")}
+          {this.renderInput("label", "Label")}
           {this.renderButton("Save")}
         </form>
       </div>
@@ -85,6 +89,7 @@ class ItemForm extends Forms {
 
 const mapStateToProps = (state) => ({
   foodItems: state.entities.home.food,
+  user: state.entities.home.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

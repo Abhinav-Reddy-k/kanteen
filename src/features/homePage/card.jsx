@@ -5,14 +5,14 @@ import { addRemoveCart, deleteItem } from "./homeSlice";
 import { getCurrentUser } from "../../services/authService";
 import "./card.css";
 
-function Card({ url,url2, title, id, price }) {
+function Card({ url, url2, title, id, price, discount, label }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((store) => store.entities.home.cart);
   const bool = cartItems.filter((item) => item.item === id).length === 0;
   const cartStyle = bool ? {} : { background: "#e67e22", color: "#fff" };
   return (
     <Fragment>
-      <div className="col-md-3 col-sm-6">
+      <div className="col">
         <div className="product-grid3">
           <div className="product-image3">
             <p>
@@ -20,16 +20,29 @@ function Card({ url,url2, title, id, price }) {
               <img className="pic-2" src={url2} />
             </p>
             <ul className="social">
-              <li><button><i className="fa fa-shopping-bag"></i></button></li>
-              <li><button style={cartStyle} onClick={() => dispatch(addRemoveCart(id, bool))}><i className="fa fa-shopping-cart" ></i></button></li>
+              <li>
+                <button>
+                  <i className="fa fa-shopping-bag"></i>
+                </button>
+              </li>
+              <li>
+                <button
+                  style={cartStyle}
+                  onClick={() => dispatch(addRemoveCart(id, bool))}
+                >
+                  <i className="fa fa-shopping-cart"></i>
+                </button>
+              </li>
             </ul>
-            <span className="product-new-label">New</span>
+            <span className="product-new-label">{label}</span>
           </div>
           <div className="product-content">
-            <h3 className="title"><a href="#">{title}</a></h3>
+            <h3 className="title">
+              <a href="#">{title}</a>
+            </h3>
             <div className="price">
               {`₹ ${price}`}
-              <span>{`₹ ${price + 5}`}</span>
+              <span>{`₹ ${price + discount}`}</span>
             </div>
             <ul className="rating">
               <li className="fa fa-star"></li>
@@ -40,8 +53,6 @@ function Card({ url,url2, title, id, price }) {
             </ul>
           </div>
         </div>
-      </div>
-      <div>
         {getCurrentUser().isAdmin && (
           <Fragment>
             <button
@@ -56,7 +67,6 @@ function Card({ url,url2, title, id, price }) {
           </Fragment>
         )}
       </div>
-      <hr></hr>
     </Fragment>
   );
 }

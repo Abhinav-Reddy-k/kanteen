@@ -57,7 +57,6 @@ const BgImage = styled.div`
   margin-top: -100px;
 `;
 const user = getCurrentUser();
-const sugg = ["Milkshakes", "Manchuria", "Pani Puri"];
 export default function Header() {
   const totalCartItems = useSelector((store) => store.entities.home.cart)
     .length;
