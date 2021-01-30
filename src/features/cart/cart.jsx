@@ -1,12 +1,18 @@
 import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addRemoveCart, emptyCart, setQuantity } from "../homePage/homeSlice";
+import {
+  emptyCart,
+  getCart,
+  getFoodItems,
+  removeCart,
+  setQuantity,
+} from "../homePage/homeSlice";
 import "./cart.css";
 
 function Cart() {
-  const cart = useSelector((state) => state.entities.home.cart);
-  const food = useSelector((state) => state.entities.home.food);
+  const cart = useSelector(getCart);
+  const food = useSelector(getFoodItems);
   const dispatch = useDispatch();
   let totalPrice = 0;
 
@@ -89,9 +95,7 @@ function Cart() {
                           <td>
                             <button
                               className="btn btn-dark btn-sm"
-                              onClick={() =>
-                                dispatch(addRemoveCart(obj.item, false))
-                              }
+                              onClick={() => dispatch(removeCart(obj.item))}
                             >
                               <i className="fa fa-trash"></i>
                             </button>

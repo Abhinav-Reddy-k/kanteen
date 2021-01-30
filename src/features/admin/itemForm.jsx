@@ -2,7 +2,6 @@ import React from "react";
 import Forms from "../../common/forms";
 import { connect } from "react-redux";
 import { addItem, updateItem } from "../homePage/homeSlice";
-import { getCurrentUser } from "../../services/authService";
 import { toast } from "react-toastify";
 import "./../stateless/Login.css";
 const Joi = require("@hapi/joi");
@@ -18,6 +17,7 @@ class ItemForm extends Forms {
       price: "",
       discount: "",
       label: "",
+      availability: true,
     },
     categories: ["MilkShake", "Fried Rice", "Drinks"],
     errors: {},
@@ -80,6 +80,7 @@ class ItemForm extends Forms {
           {this.renderInput("price", "Price")}
           {this.renderInput("discount", "Discount")}
           {this.renderInput("label", "Label")}
+          {this.renderInput("availability", "Availability")}
           {this.renderButton("Save")}
         </form>
       </div>

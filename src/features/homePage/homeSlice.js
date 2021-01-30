@@ -2,8 +2,7 @@ import moment from "moment";
 import { apiCallBegan } from "../api";
 import { getCurrentUser } from "../../services/authService";
 import { toast } from "react-toastify";
-const { createSlice } = require("@reduxjs/toolkit");
-let cartBool;
+const { createSlice, createSelector } = require("@reduxjs/toolkit");
 
 const slice = createSlice({
   name: "home",
@@ -20,8 +19,7 @@ const slice = createSlice({
       home.lastFetch = Date.now();
     },
     cartLoaded: (home, action) => {
-      home.cart = action.payload.cart;
-      // home.user = action.payload;
+      home.cart = action.payload;
     },
     itemAdded: (home, action) => {
       home.food.push(action.payload);
@@ -42,11 +40,13 @@ const slice = createSlice({
     foodCategorized: (home, action) => {
       home.category = action.payload.category;
     },
-    itemAddedRemovedToCart: (home, action) => {
+    itemAddedToCart: (home, action) => {
       home.cart = action.payload;
-      cartBool
-        ? toast.success("Added to cart")
-        : toast.error("Removed from cart");
+      toast.success("Added to cart");
+    },
+    itemRemovedFromCart: (home, action) => {
+      home.cart = action.payload;
+      toast.error("Removed from cart");
     },
     quantityUpdated: (home, action) => {
       const ind = home.cart.findIndex(
@@ -67,7 +67,8 @@ const {
   itemUpdated,
   itemDeleted,
   foodCategorized,
-  itemAddedRemovedToCart,
+  itemAddedToCart,
+  itemRemovedFromCart,
   cartLoaded,
   quantityUpdated,
   cartEmptied,
@@ -92,7 +93,7 @@ export const loadCart = () => (dispatch, getState) => {
   const _id = getState().entities.home.user._id;
   dispatch(
     apiCallBegan({
-      url: "/users/me",
+      url: "/users/get_user_cart",
       data: { _id },
       method: "post",
       onSuccess: cartLoaded.type,
@@ -139,15 +140,26 @@ export const deleteItem = (id) => (dispatch) => {
   );
 };
 
-export const addRemoveCart = (cartFoodId, bool) => (dispatch, getState) => {
+export const addCart = (cartFoodId) => (dispatch, getState) => {
   const userId = getState().entities.home.user._id;
-  cartBool = bool;
   dispatch(
     apiCallBegan({
       method: "post",
-      url: `/users/${bool ? "cart" : "removecart"}`,
+      url: `/users/cart`,
       data: { cartFoodId, userId },
-      onSuccess: itemAddedRemovedToCart.type,
+      onSuccess: itemAddedToCart.type,
+    })
+  );
+};
+
+export const removeCart = (cartFoodId) => (dispatch, getState) => {
+  const userId = getState().entities.home.user._id;
+  dispatch(
+    apiCallBegan({
+      method: "post",
+      url: `/users/removecart`,
+      data: { cartFoodId, userId },
+      onSuccess: itemRemovedFromCart.type,
     })
   );
 };
@@ -179,5 +191,26 @@ export const emptyCart = () => (dispatch, getState) => {
 export const categorizeFood = (category) => (dispatch) => {
   dispatch(foodCategorized({ category }));
 };
+
 // Selectors
 export const getFoodItems = (store) => store.entities.home.food;
+export const getUser = (store) => store.entities.home.user;
+export const getCart = (store) => store.entities.home.cart;
+export const getCategory = (store) => store.entities.home.category;
+
+export const isItemInCart = (itemId) =>
+  createSelector(
+    (store) => store.entities.home.cart,
+    (cart) => cart.filter((item) => item.item === itemId).length !== 0
+  );
+
+export const noOfCartItems = createSelector(
+  (store) => store.entities.home.cart,
+  (cart) => cart.length
+);
+
+export const isItemAvailable = (itemId) =>
+  createSelector(
+    (store) => store.entities.home.food,
+    (food) => food.filter((item) => item._id === itemId)[0].availability == true
+  );

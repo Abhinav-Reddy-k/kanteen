@@ -11,7 +11,7 @@ const Categories = ({ tabs, active }) => {
           <li className="nav-item">
             <a
               type="button"
-              className={tab == active ? "nav-link active" : "nav-link"}
+              className={tab === active ? "nav-link active" : "nav-link"}
               onClick={() => dispatch(categorizeFood(tab))}
             >
               {tab}

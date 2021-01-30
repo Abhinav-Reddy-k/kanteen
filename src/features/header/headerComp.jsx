@@ -10,10 +10,10 @@ import {
   Navbar,
   DesktopList,
 } from "already-styled-components";
-import { getCurrentUser } from "../../services/authService";
 
 import "./styles.css";
 import { useSelector } from "react-redux";
+import { getUser, noOfCartItems } from "../homePage/homeSlice";
 const TransparentDesktopList = styled(DesktopList)`
   display: flex;
   align-items: center;
@@ -56,10 +56,9 @@ const BgImage = styled.div`
   background-size: cover;
   margin-top: -100px;
 `;
-const user = getCurrentUser();
 export default function Header() {
-  const totalCartItems = useSelector((store) => store.entities.home.cart)
-    .length;
+  const user = useSelector(getUser);
+  const totalCartItems = useSelector(noOfCartItems);
   return (
     <Container fluid>
       <Navbar
@@ -77,6 +76,7 @@ export default function Header() {
         )}
       >
         <Link to="/profile">Profile</Link>
+        <Link to="/wishlist">Wishlist</Link>
         <Link to="/cart">
           <svg
             width="1em"

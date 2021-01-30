@@ -12,6 +12,7 @@ import ItemForm from "./features/admin/itemForm";
 import "react-toastify/dist/ReactToastify.css";
 import { getCurrentUser } from "./services/authService";
 import Cart from "./features/cart/cart";
+import WishList from "./features/wishlist/wishlist";
 
 function App() {
   let user = "";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/cart" component={Cart} />
           <Route path="/logout" component={Logout} />
           <Route path="/home/items/:id" component={ItemForm} />
+          <Route path="/wishlist" component={WishList} />
           <Route path="/pageNotFound" component={PageNotFound} />
           <Route path="/home" component={HomePage} />
           <Redirect from="/" exact to="/home" />

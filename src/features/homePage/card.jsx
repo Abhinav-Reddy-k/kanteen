@@ -1,15 +1,34 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addRemoveCart, deleteItem } from "./homeSlice";
+import {
+  addCart,
+  deleteItem,
+  isItemAvailable,
+  isItemInCart,
+  removeCart,
+} from "./homeSlice";
 import { getCurrentUser } from "../../services/authService";
 import "./card.css";
+import {
+  addItem,
+  delete_item_from_wishlist,
+  isItemInWishlist,
+} from "../wishlist/wishlistSlice";
 
 function Card({ url, url2, title, id, price, discount, label }) {
   const dispatch = useDispatch();
-  const cartItems = useSelector((store) => store.entities.home.cart);
-  const bool = cartItems.filter((item) => item.item === id).length === 0;
-  const cartStyle = bool ? {} : { background: "#e67e22", color: "#fff" };
+  const is_item_in_cart = useSelector(isItemInCart(id));
+  const is_item_in_wishlist = useSelector(isItemInWishlist(id));
+  const is_item_available = useSelector(isItemAvailable(id));
+  const wishlist_icon_style = !is_item_in_wishlist
+    ? {}
+    : { background: "#e67e22", color: "#fff" };
+  const cartStyle = is_item_available
+    ? !is_item_in_cart
+      ? {}
+      : { background: "#e67e22", color: "#fff" }
+    : { pointerEvents: "none" };
   return (
     <Fragment>
       <div className="col">
@@ -21,14 +40,33 @@ function Card({ url, url2, title, id, price, discount, label }) {
             </p>
             <ul className="social">
               <li>
-                <button>
+                <button
+                  style={wishlist_icon_style}
+                  onClick={
+                    is_item_in_wishlist
+                      ? () => {
+                          dispatch(delete_item_from_wishlist(id));
+                        }
+                      : () => {
+                          dispatch(addItem(id));
+                        }
+                  }
+                >
                   <i className="fa fa-shopping-bag"></i>
                 </button>
               </li>
               <li>
                 <button
                   style={cartStyle}
-                  onClick={() => dispatch(addRemoveCart(id, bool))}
+                  onClick={
+                    is_item_in_cart
+                      ? () => {
+                          dispatch(removeCart(id));
+                        }
+                      : () => {
+                          dispatch(addCart(id));
+                        }
+                  }
                 >
                   <i className="fa fa-shopping-cart"></i>
                 </button>

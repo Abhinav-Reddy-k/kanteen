@@ -9,12 +9,16 @@ import Features from "./features";
 import Items from "./items";
 import Categories from "./categories";
 import ScrollUpButton from "react-scroll-up-button";
+import { loadWishlist } from "../wishlist/wishlistSlice";
 
 const HomePage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadFood());
-    if (getCurrentUser()) dispatch(loadCart());
+    if (getCurrentUser()) {
+      dispatch(loadCart());
+      dispatch(loadWishlist());
+    }
   });
   const food = useSelector((state) => state.entities.home.food);
   const category = useSelector((state) => state.entities.home.category);
@@ -39,6 +43,7 @@ const HomePage = () => {
         tabs={["All", "MilkShake", "Fried Rice", "Drinks"]}
       />
       <Items className="container" foodItems={foodItems} />
+      <Link to="/wishlist">Wishlist</Link>
       <ScrollUpButton />
     </Fragment>
   );
