@@ -109,6 +109,7 @@ export default function Header() {
                   <p>Icecreame</p>
                   <p>MilkShake</p>
                   <p>Panipuri</p>
+                  <p>Manchuria</p>
                 </TextLoop>
               </h1>
             </Centered>

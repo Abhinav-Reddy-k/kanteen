@@ -5,6 +5,7 @@ import { http } from "../middleware/api";
 
 export async function login(email, password) {
   const { data: jwt } = await http.post(`${apiUrl}/auth`, { email, password });
+  console.log(jwt);
   localStorage.setItem("token", jwt);
 }
 export function logout() {

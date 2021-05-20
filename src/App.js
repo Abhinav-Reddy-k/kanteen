@@ -19,7 +19,6 @@ function App() {
   user = getCurrentUser();
   return (
     <React.Fragment>
-      <ToastContainer />
       {!user && <NavBar />}
       <main>
         <Switch>
@@ -35,6 +34,7 @@ function App() {
           <Redirect to="/pageNotFound" />
         </Switch>
       </main>
+      <ToastContainer />
     </React.Fragment>
   );
 }

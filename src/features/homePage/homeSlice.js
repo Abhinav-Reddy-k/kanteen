@@ -212,5 +212,5 @@ export const noOfCartItems = createSelector(
 export const isItemAvailable = (itemId) =>
   createSelector(
     (store) => store.entities.home.food,
-    (food) => food.filter((item) => item._id === itemId)[0].availability == true
+    (food) => food.filter((item) => item._id === itemId)[0].availability === true
   );

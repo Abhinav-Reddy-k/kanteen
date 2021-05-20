@@ -43,7 +43,6 @@ const HomePage = () => {
         tabs={["All", "MilkShake", "Fried Rice", "Drinks"]}
       />
       <Items className="container" foodItems={foodItems} />
-      <Link to="/wishlist">Wishlist</Link>
       <ScrollUpButton />
     </Fragment>
   );

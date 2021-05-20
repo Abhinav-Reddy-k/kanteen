@@ -1,6 +1,7 @@
 import { apiCallBegan, apiCallFailed, apiCallSuccess } from "../features/api";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { apiUrl } from "../config.json";
 
 axios.defaults.headers.common["x-auth-token"] = localStorage.getItem("token");
 
@@ -23,7 +24,7 @@ const api = (store) => (next) => async (action) => {
 
   try {
     const responce = await axios({
-      baseURL: "http://localhost:3000/api",
+      baseURL: apiUrl,
       url,
       method,
       data,
