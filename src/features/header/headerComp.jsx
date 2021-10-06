@@ -106,10 +106,11 @@ export default function Header() {
               <h1>
                 Whats on your mind {user["name"].toUpperCase()} ?{" "}
                 <TextLoop springConfig={{ stiffness: 180, damping: 8 }}>
-                  <p>Icecreame</p>
+                  <p>Icecream</p>
                   <p>MilkShake</p>
                   <p>Panipuri</p>
                   <p>Manchuria</p>
+                  <p>Biryani</p>
                 </TextLoop>
               </h1>
             </Centered>
