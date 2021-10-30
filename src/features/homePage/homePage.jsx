@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect } from "react";
 import { getCurrentUser } from "../../services/authService";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +30,7 @@ const HomePage = () => {
   if (!getCurrentUser()) return <Redirect to={"/login"} />;
 
   return (
-    <Fragment>
+    <>
       <Header />
       <Features />
       {getCurrentUser().isAdmin && (
@@ -44,7 +44,7 @@ const HomePage = () => {
       />
       <Items className="container" foodItems={foodItems} />
       <ScrollUpButton />
-    </Fragment>
+    </>
   );
 };
 

@@ -8,7 +8,7 @@ const Joi = require("@hapi/joi");
 class Register extends Forms {
   state = {
     data: { username: "", password: "", email: "" },
-    errors: {}
+    errors: {},
   };
 
   schema = Joi.object({
@@ -17,7 +17,7 @@ class Register extends Forms {
     email: Joi.string()
       .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
       .required()
-      .label("Email")
+      .label("Email"),
   }).options({ abortEarly: false });
 
   doSubmit = async () => {
@@ -38,14 +38,16 @@ class Register extends Forms {
 
   render() {
     return (
-      <div className="main">
-        <h1 className="bm sign m-4">Register</h1>
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput("username", "Username")}
-          {this.renderInput("email", "Email")}
-          {this.renderInput("password", "Password", "password")}
-          {this.renderButton("Register")}
-        </form>
+      <div className="page">
+        <div className="main">
+          <h1 className="bm sign m-4">Register</h1>
+          <form onSubmit={this.handleSubmit}>
+            {this.renderInput("username", "Username")}
+            {this.renderInput("email", "Email")}
+            {this.renderInput("password", "Password", "password")}
+            {this.renderButton("Register")}
+          </form>
+        </div>
       </div>
     );
   }

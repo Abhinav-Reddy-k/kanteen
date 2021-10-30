@@ -1,6 +1,13 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { getCurrentUser } from "../../services/authService";
+import {
+  addItem,
+  delete_item_from_wishlist,
+  isItemInWishlist,
+} from "../wishlist/wishlistSlice";
+import "./card.css";
 import {
   addCart,
   deleteItem,
@@ -8,13 +15,6 @@ import {
   isItemInCart,
   removeCart,
 } from "./homeSlice";
-import { getCurrentUser } from "../../services/authService";
-import "./card.css";
-import {
-  addItem,
-  delete_item_from_wishlist,
-  isItemInWishlist,
-} from "../wishlist/wishlistSlice";
 
 function Card({ url, url2, title, id, price, discount, label }) {
   const dispatch = useDispatch();

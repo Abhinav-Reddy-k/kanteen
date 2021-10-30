@@ -47,11 +47,6 @@
   position: relative;
 }
 
-.total {
-  font-size: 24px;
-  font-weight: 600;
-  color: #8660e9;
-}
 .display-flex {
   display: flex;
 }
@@ -78,53 +73,7 @@
 .mb-10 {
   margin-bottom: 10px !important;
 }
-.mt-30 {
-  margin-top: 30px !important;
-}
-.d-block {
-  display: block;
-}
-.custom-form label {
-  font-size: 14px;
-  line-height: 14px;
-}
-.pretty.p-default {
-  margin-bottom: 15px;
-}
 .pretty input:checked ~ .state.p-primary-o label:before,
-.pretty.p-toggle .state.p-primary-o label:before {
-  border-color: #8660e9;
-}
-.pretty.p-default:not(.p-fill) input:checked ~ .state.p-primary-o label:after {
-  background-color: #8660e9 !important;
-}
-.main-heading.border-b {
-  border-bottom: solid 1px #ededed;
-  padding-bottom: 15px;
-  margin-bottom: 20px !important;
-}
-.custom-form .pretty .state label {
-  padding-left: 6px;
-}
-.custom-form .pretty .state label:before {
-  top: 1px;
-}
-.custom-form .pretty .state label:after {
-  top: 1px;
-}
-.custom-form .form-control {
-  font-size: 14px;
-  height: 38px;
-}
-.custom-form .form-control:focus {
-  box-shadow: none;
-}
-.custom-form textarea.form-control {
-  height: auto;
-}
-.mt-40 {
-  margin-top: 40px !important;
-}
 .in-stock-box {
   background: #ff0000;
   font-size: 12px;

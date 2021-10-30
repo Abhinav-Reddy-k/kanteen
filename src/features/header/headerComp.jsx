@@ -11,7 +11,6 @@ import {
   DesktopList,
 } from "already-styled-components";
 
-import "./styles.css";
 import { useSelector } from "react-redux";
 import { getUser, noOfCartItems } from "../homePage/homeSlice";
 const TransparentDesktopList = styled(DesktopList)`
@@ -44,7 +43,7 @@ const TransparentDesktopList = styled(DesktopList)`
 `;
 
 const Brand = styled.div`
-  font-size: 32px;
+  font-size: 1em;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   text-transform: uppercase;
 `;
@@ -103,7 +102,7 @@ export default function Header() {
             }
           >
             <Centered c="white" h="100%">
-              <h1>
+              <h3>
                 Whats on your mind {user["name"].toUpperCase()} ?{" "}
                 <TextLoop springConfig={{ stiffness: 180, damping: 8 }}>
                   <p>Icecream</p>
@@ -112,7 +111,7 @@ export default function Header() {
                   <p>Manchuria</p>
                   <p>Biryani</p>
                 </TextLoop>
-              </h1>
+              </h3>
             </Centered>
           </BgImage>
         </Column>

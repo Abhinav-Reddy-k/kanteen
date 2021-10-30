@@ -1,18 +1,19 @@
 import React from "react";
-
-import LoginForm from "./features/stateless/login";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Register from "./features/stateless/register";
-import Logout from "./features/stateless/logout";
-import PageNotFound from "./features/stateless/pageNotFound";
-import HomePage from "./features/homePage/homePage";
-import NavBar from "./features/stateless/navbar";
-import ItemForm from "./features/admin/itemForm";
 import "react-toastify/dist/ReactToastify.css";
-import { getCurrentUser } from "./services/authService";
+
+import ItemForm from "./features/admin/itemForm";
 import Cart from "./features/cart/cart";
+import HomePage from "./features/homePage/homePage";
+import LoginForm from "./features/stateless/login";
+import Logout from "./features/stateless/logout";
+import NavBar from "./features/stateless/navbar";
+import PageNotFound from "./features/stateless/pageNotFound";
+import Register from "./features/stateless/register";
 import WishList from "./features/wishlist/wishlist";
+
+import { getCurrentUser } from "./services/authService";
 
 function App() {
   let user = "";
