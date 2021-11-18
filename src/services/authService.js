@@ -1,10 +1,9 @@
 import jwt_decode from "jwt-decode";
 
-import { apiUrl } from "../config.json";
 import { http } from "../middleware/api";
 
 export async function login(email, password) {
-  const { data: jwt } = await http.post(`${apiUrl}/auth`, { email, password });
+  const { data: jwt } = await http.post(`/auth`, { email, password });
   console.log(jwt);
   localStorage.setItem("token", jwt);
 }

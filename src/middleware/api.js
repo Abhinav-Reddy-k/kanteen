@@ -1,10 +1,9 @@
 import { apiCallBegan, apiCallFailed, apiCallSuccess } from "../features/api";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { apiUrl } from "../config.json";
 
 axios.defaults.headers.common["x-auth-token"] = localStorage.getItem("token");
-
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.interceptors.response.use(null, function (error) {
   const expectedError =
     error.response &&
@@ -24,7 +23,6 @@ const api = (store) => (next) => async (action) => {
 
   try {
     const responce = await axios({
-      baseURL: apiUrl,
       url,
       method,
       data,
