@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Pie } from "react-chartjs-2";
 import {
   emptyCart,
   getCart,
@@ -15,6 +16,39 @@ function Cart() {
   const food = useSelector(getFoodItems);
   const dispatch = useDispatch();
   let totalPrice = 0;
+
+  let cartData = cart.map((obj) => {
+    let itemId = obj.item;
+    let foodItem = food.filter((i) => i._id == itemId);
+    return { ...obj, item: foodItem };
+  });
+
+  const pieChartData = {
+    labels: cartData.map((obj) => obj.item[0].name),
+    datasets: [
+      {
+        label: "# of Votes",
+        data: cartData.map((obj) => obj.item[0].price * obj.quantity),
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <Fragment>
@@ -142,17 +176,23 @@ function Cart() {
                     </tbody>
                   </table>
                   <div className="btn-cart-totals">
-                    <a
+                    <button
                       onClick={() => dispatch(emptyCart())}
                       className="update round-black-btn"
                       title=""
                     >
                       Empty Cart
-                    </a>
+                    </button>
                     <hr />
-                    <a href="#" className="checkout round-black-btn" title="">
-                      <Link to="/order">Place Order</Link>
-                    </a>
+                    <Link
+                      className="checkout round-black-btn"
+                      to="/orderPreview"
+                    >
+                      Place Order
+                    </Link>
+                  </div>
+                  <div className="m-4">
+                    <Pie data={pieChartData} />
                   </div>
                 </form>
               </div>

@@ -38,6 +38,9 @@ const HomePage = () => {
           Add new item
         </Link>
       )}
+      <Link to="/test">
+        <button>Test</button>
+      </Link>
       <Categories
         active={category}
         tabs={["All", "MilkShake", "Fried Rice", "Drinks"]}

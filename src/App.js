@@ -14,6 +14,7 @@ import Register from "./features/stateless/register";
 import WishList from "./features/wishlist/wishlist";
 
 import { getCurrentUser } from "./services/authService";
+import orderPreview from "./features/order/orderPreview";
 
 function App() {
   let user = "";
@@ -23,6 +24,7 @@ function App() {
       {!user && <NavBar />}
       <main>
         <Switch>
+          {/* <Route path="/home/orderPreview" component={orderPreview} /> */}
           <Route path="/register" component={Register} />
           <Route path="/login" component={LoginForm} />
           <Route path="/cart" component={Cart} />
